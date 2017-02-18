@@ -16,7 +16,8 @@ public class MessagePane extends JPanel implements Observer {
     private DictionaryModel model;
     private JTextArea message;
 
-    /**Constructor
+    /**
+     * Constructor
      *
      * @param model, the DictionaryModel
      */
