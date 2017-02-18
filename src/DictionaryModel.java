@@ -210,7 +210,7 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
 
     @Override
     /**
-     *
+     * Increments the counter variable and adds the next word in the List to the Message List
      */
     public void nextMatch() {
 
@@ -229,7 +229,7 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
 
     @Override
     /**
-     *
+     * Accepts the current word and starts the next potential word
      */
     public void acceptWord() {
 
