@@ -8,7 +8,7 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
     private int counter;
     private TreeDictionary dictionary; // The dictionary data structure
     private String signature; // signature value
-    private List<String> wordsList;
+    private List<String> words;
     private List<String> message;
 
     /*
@@ -22,7 +22,7 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
     public DictionaryModel(String dictionaryFile) throws java.io.IOException{
 
         this.message = new ArrayList<>();
-        wordsList = new ArrayList<>();
+        words = new ArrayList<>();
         message.add("");
         this.signature = "";
         this.dictionary = new TreeDictionary(dictionaryFile);
@@ -33,47 +33,12 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
      * @throws java.io.IOException
      */
     public DictionaryModel() throws java.io.IOException{
-        wordsList = new ArrayList<>();
+
+        words = new ArrayList<>();
         this.message = new ArrayList<>();
         message.add("");
         this.signature = "";
         this.dictionary = new TreeDictionary("words");
-    }
-
-    public int getCounter() {
-        return counter;
-    }
-
-    public TreeDictionary getDictionary() {
-        return dictionary;
-    }
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public List<String> getWordsList() {
-        return wordsList;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
-
-    public void setDictionary(TreeDictionary dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    public void setWordsList(List<String> wordsList) {
-        this.wordsList = wordsList;
-    }
-
-    public void setMessage(List<String> message) {
-        this.message = message;
     }
 
     @Override
@@ -92,12 +57,12 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
     public void addCharacter(char key) {
         counter = 0;
         this.signature = signature + key;
-        wordsList.clear();
-        wordsList.addAll(dictionary.signatureToWords(this.signature));
+        words.clear();
+        words.addAll(dictionary.signatureToWords(this.signature));
 
-        if(!wordsList.isEmpty()) {
+        if(!words.isEmpty()) {
 
-            message.set(message.size() - 1,wordsList.get(0));
+            message.set(message.size() - 1,words.get(0));
             setChanged();
             notifyObservers(message);
         }
@@ -113,11 +78,12 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
         if (this.signature.length() > 0) {
 
             this.signature = signature.substring(0, signature.length() - 1);
-            wordsList.clear();
-            wordsList.addAll(dictionary.signatureToWords(this.signature));
 
-            if (!wordsList.isEmpty()) {
-                String tempWord = wordsList.get(0);
+            words = new LinkedList<>();
+            words.addAll(dictionary.signatureToWords(this.signature));
+
+            if (!words.isEmpty()) {
+                String tempWord = words.get(0);
                 message.set(message.size() - 1, tempWord.substring(0, tempWord.length() - 1));
                 setChanged();
                 notifyObservers(message);
@@ -134,8 +100,8 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
      */
     public void nextMatch() {
 
-        counter = (counter + 1) % wordsList.size();
-        message.set(message.size() -1, wordsList.get(counter));
+        counter = (counter + 1) % words.size();
+        message.set(message.size() -1, words.get(counter));
 
         setChanged();
         notifyObservers(message);
@@ -148,7 +114,7 @@ public class DictionaryModel extends Observable implements DictionaryModelInterf
     public void acceptWord() {
 
         message.add("");
-        wordsList.clear();
+        words.clear();
         signature = "";
 
         setChanged();
